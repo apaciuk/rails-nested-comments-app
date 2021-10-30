@@ -3,31 +3,22 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-window.Rails = require("@rails/ujs")
 require("@hotwired/turbo-rails")
+require("@rails/ujs").start()
 require("@rails/activestorage").start()
 require("channels")
-//require("trix")
-//require("@rails/actiontext")
 require("local-time").start()
 
-// Start Rails UJS
-Rails.start()
+window.Rails = Rails
 
-// Bootstrap
 import 'bootstrap'
+import 'data-confirm-modal'
 
-document.addEventListener("turbo:load", () => {
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-
-  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl)
-  })
+$(document).on("turbolinks:load", () => {
+  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="popover"]').popover()
 })
 
-
+require("trix")
+require("@rails/actiontext")
 import "controllers"

@@ -1,14 +1,20 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :posts do
+    resources :comments, module: :posts
+  end
+
+  resources :comments do
+    resources :comments, module: :comments
+  end
+
   get '/privacy', to: 'home#privacy'
   get '/terms', to: 'home#terms'
-authenticate :user, lambda { |u| u.admin? } do
-  mount Sidekiq::Web => '/sidekiq'
+    authenticate :user, lambda { |u| u.admin? } do
+      mount Sidekiq::Web => '/sidekiq'
+    end
 
-  namespace :madmin do
-  end
-end
 
   resources :notifications, only: [:index]
   resources :announcements, only: [:index]
